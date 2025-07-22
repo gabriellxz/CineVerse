@@ -5,6 +5,7 @@ import SlidersMovie from "./Sections/MainPage/SlidersMovie/SlidersMovie";
 import PopularMovies from "./Sections/MainPage/PopularMovies/PopularMovies"
 import type { Movies } from "./types/movies";
 import TopRated from "./Sections/MainPage/TopRated/TopRated";
+import MoviesGenres from "./Sections/MainPage/MoviesGenres/MoviesGenres";
 
 function App() {
   const [movies, setMovies] = useState<Movies[]>([]);
@@ -32,6 +33,7 @@ function App() {
       </section>
 
       <section className="w-full">
+        <MoviesGenres />
         <TopRated />
         <PopularMovies movies={movies} />
       </section>
