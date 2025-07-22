@@ -9,7 +9,7 @@ export default function PopularMovies({ movies }: Props) {
     return (
         <>
             <div className="flex flex-col m-5">
-                <h1 className="text-white text-2xl font-bold uppercase">Filmes popolares</h1>
+                <h1 className="text-white text-2xl font-bold uppercase">Filmes populares</h1>
                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
             </div>
             <div className="mt-4">
