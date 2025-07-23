@@ -11,12 +11,14 @@ export default function MoviesByGenres() {
     const genreId = searchParams.get("genreId");
     const genreName = searchParams.get("genreName");
 
+    const language = localStorage.getItem("@cn_language")
+
     const [moviesByGenres, setMoviesByGenres] = useState<Movies[]>([]);
 
     useEffect(() => {
         async function getMoviesByGenres() {
             try {
-                const response = await api.get(`/discover/movie?api_key=${import.meta.env.VITE_API_KEY}&with_genres=${genreId}`);
+                const response = await api.get(`/discover/movie?api_key=${import.meta.env.VITE_API_KEY}&with_genres=${genreId}&language=${language}`);
                 console.log(response.data);
                 setMoviesByGenres(response.data.results);
             } catch (error) {
