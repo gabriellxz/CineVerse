@@ -9,11 +9,14 @@ import MoviesGenres from "./Sections/MainPage/MoviesGenres/MoviesGenres";
 
 function App() {
   const [movies, setMovies] = useState<Movies[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState(() => {
+    return localStorage.getItem("@cn_language")
+  })
 
   useEffect(() => {
     async function getMovies() {
       try {
-        const response = await api.get(`/movie/popular?api_key=${import.meta.env.VITE_API_KEY}`);
+        const response = await api.get(`/movie/popular?api_key=${import.meta.env.VITE_API_KEY}&language=${selectedLanguage}`);
         // console.log(response.data);
         setMovies(response.data.results);
       } catch (error) {
@@ -22,19 +25,19 @@ function App() {
     }
 
     getMovies();
-  }, [])
+  }, [selectedLanguage])
 
   return (
     <>
-      <Header />
+      <Header selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} />
 
       <section className="w-full">
         <SlidersMovie movies={movies} />
       </section>
 
       <section className="w-full">
-        <MoviesGenres />
-        <TopRated />
+        <MoviesGenres selectedLanguage={selectedLanguage} />
+        <TopRated selectedLanguage={selectedLanguage} />
         <PopularMovies movies={movies} />
       </section>
     </>

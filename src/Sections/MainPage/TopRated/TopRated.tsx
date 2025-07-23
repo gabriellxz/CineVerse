@@ -3,14 +3,18 @@ import { api } from "@/config/api";
 import type { Movies } from "@/types/movies";
 import { useEffect, useState } from "react";
 
-export default function TopRated() {
+interface Props {
+    selectedLanguage: string | null;
+}
+
+export default function TopRated({ selectedLanguage }: Props) {
 
     const [moviesTopRated, setMoviesTopRated] = useState<Movies[]>([]);
 
     useEffect(() => {
         async function getMoviesTopRated() {
             try {
-                const response = await api.get(`/movie/top_rated?api_key=${import.meta.env.VITE_API_KEY}`);
+                const response = await api.get(`/movie/top_rated?api_key=${import.meta.env.VITE_API_KEY}&language=${selectedLanguage}`);
                 // console.log(response.data);
                 setMoviesTopRated(response.data.results);
             } catch (error) {
@@ -19,7 +23,7 @@ export default function TopRated() {
         }
 
         getMoviesTopRated();
-    }, [])
+    }, [selectedLanguage])
 
     return (
         <>
