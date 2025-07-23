@@ -2,9 +2,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { api } from "@/config/api";
 import type { Genres } from "@/types/genres";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function MoviesGenres() {
 
+    const navigate = useNavigate();
     const genreColorMap: { [key: number]: string } = {
         28: "#FF5252",
         12: "#4CAF50",
@@ -27,13 +29,21 @@ export default function MoviesGenres() {
         37: "#D2691E"
     };
 
+    function onNavigateToGenre(genreId: number, genreName: string) {
+        const query = new URLSearchParams();
+        query.set("genreId", genreId.toString());
+        query.set("genreName", genreName);
+
+        navigate(`/movies?${query.toString()}`);
+    }
+
     const [moviesGenres, setMoviesGenres] = useState<Genres[]>([]);
 
     useEffect(() => {
         async function getMoviesGenres() {
             try {
                 const response = await api.get(`/genre/movie/list?api_key=${import.meta.env.VITE_API_KEY}`);
-                console.log(response.data)
+                // console.log(response.data)
                 setMoviesGenres(response.data.genres);
             } catch (error) {
                 console.error("Error fetching movie genres:", error);
@@ -53,7 +63,7 @@ export default function MoviesGenres() {
                 <Carousel className="w-full overflow-hidden relative">
                     <CarouselContent className="-ml-1 flex gap-4">
                         {moviesGenres.map((genre: Genres) => (
-                            <CarouselItem key={genre.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
+                            <CarouselItem onClick={() => onNavigateToGenre(genre.id, genre.name)} key={genre.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8 select-none">
                                 <div className={`p-1 h-[100px] rounded-xl flex justify-center items-center text-2xl`} style={{backgroundColor: genreColorMap[genre.id]}}>
                                     <h2 className="text-white font-bold">{genre.name}</h2>
                                 </div>
