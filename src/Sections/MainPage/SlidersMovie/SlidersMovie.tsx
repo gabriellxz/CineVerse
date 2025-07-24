@@ -1,12 +1,30 @@
+import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { api } from "@/config/api";
+import Modal from "@/Layouts/Modal/Modal";
 import type { Movies } from "@/types/movies";
 import Autoplay from "embla-carousel-autoplay";
+import { useState } from "react";
 
 interface Props {
     movies: Movies[];
 }
 
 export default function SlidersMovie({ movies }: Props) {
+
+    const [videoMovie, setVideMovie] = useState("")
+
+    async function getVidesMovies(movieId: number) {
+        try {
+            const response = await api.get(`/movie/${movieId}/videos?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
+            console.log(response.data.results[0].key)
+            setVideMovie(response.data.results[0].key)
+        } catch (error) {
+            console.error("Houve um erro na requisição do filme: ", error)
+        }
+    }
+
     return (
         <div className="w-full">
             <Carousel
@@ -26,16 +44,30 @@ export default function SlidersMovie({ movies }: Props) {
                                     alt={movie.title}
                                     className="w-full object-cover"
                                 />
-                                <div className="absolute top-0 left-0 w-full h-full bg-black/65 flex items-end justify-start">
-                                    <p className="text-white font-bold p-7 text-xl sm:text-3xl md:text-5xl lg:text-7xl">
+                                <div className="absolute top-0 left-0 w-full h-full bg-black/65 flex flex-col items-start justify-end p-7 gap-3">
+                                    <p className="text-white font-bold text-xl sm:text-3xl md:text-5xl lg:text-7xl">
                                         {movie.title}
                                     </p>
+                                    <Modal>
+                                        <DialogTrigger>
+                                            <Button onClick={() => getVidesMovies(movie.id)} className="md:p-7 sm:text-xl font-bold">
+                                                Assistir trailer
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-[800px] max-sm:max-w-[95vw] w-full p-0 bg-neutral-900 rounded-lg border-none">
+                                            <iframe
+                                                className="w-full aspect-video rounded-t-lg"
+                                                src={`https://www.youtube.com/embed/${videoMovie}?autoplay=1`}
+                                                allowFullScreen
+                                            />
+                                        </DialogContent>
+                                    </Modal>
                                 </div>
                             </CarouselItem>
                         ))
                     }
                 </CarouselContent>
             </Carousel>
-        </div>
+        </div >
     )
 }
