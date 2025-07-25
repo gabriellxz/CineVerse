@@ -16,15 +16,28 @@ interface Props {
 export default function SlidersMovie({ movies, isLoading }: Props) {
 
     const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+
+    //estado para monitorar se o modal está aberto ou fechado (o modal não depende desse estado para abrir ou fechae)
+    const [openModal, setOpenModal] = useState(false)
+
     const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? 0);
 
     const getVidesMovies = async (id: number) => {
         setSelectedMovieId(id);
         await fetchVideo()
+        setOpenModal(true)
     };
 
+    const handleModalOpenChange = (open: boolean) => {
+        if (!open) {
+            setSelectedMovieId(null)
+        }
+
+        setOpenModal(open)
+    }
+
     if (isLoading) {
-        <SkeletonSliders />
+        return <SkeletonSliders />
     }
 
     return (
@@ -50,7 +63,7 @@ export default function SlidersMovie({ movies, isLoading }: Props) {
                                     <p className="text-white font-bold text-xl sm:text-3xl md:text-5xl lg:text-7xl">
                                         {movie.title}
                                     </p>
-                                    <Modal>
+                                    <Modal open={openModal} onOpenChange={handleModalOpenChange}>
                                         <DialogTrigger>
                                             <Button onClick={() => getVidesMovies(movie.id)} className="md:p-7 sm:text-xl font-bold">
                                                 Assistir trailer
