@@ -63,10 +63,10 @@ export default function MoviesGenres() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="text-white absolute left-0 z-10 flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
+                    <CarouselPrevious className="hidden text-white absolute left-0 z-10 md:flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
                         <span className="text-white">&lt;</span>
                     </CarouselPrevious>
-                    <CarouselNext className="text-white absolute right-0 z-10 flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
+                    <CarouselNext className="hidden text-white absolute right-0 z-10 md:flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
                         <span className="text-white">&gt;</span>
                     </CarouselNext>
                 </Carousel>

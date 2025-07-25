@@ -32,21 +32,21 @@ export default function PopularMovies({ movies, isLoading, isFetching }: Props) 
                         {movies?.map((movie: Movies) => (
                             <CarouselItem key={movie.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
                                 <motion.div
-                                    whileHover={{ scale: 1.2 }}
+                                    whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.8 }}
                                     className="p-1"
                                 >
                                     <div>
-                                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+                                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="rounded-md"/>
                                     </div>
                                 </motion.div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="text-white absolute left-0 z-10 flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
+                    <CarouselPrevious className="hidden text-white absolute left-0 z-10 sm:flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
                         <span className="text-white">&lt;</span>
                     </CarouselPrevious>
-                    <CarouselNext className="text-white absolute right-0 z-10 flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
+                    <CarouselNext className="hidden text-white absolute right-0 z-10 md:flex items-center justify-center w-10 h-10 bg-transparent rounded-full shadow-md">
                         <span className="text-white">&gt;</span>
                     </CarouselNext>
                 </Carousel>

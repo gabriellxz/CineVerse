@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Header from "./Layouts/Header/Header";
 import SlidersMovie from "./Sections/MainPage/SlidersMovie/SlidersMovie";
 import PopularMovies from "./Sections/MainPage/PopularMovies/PopularMovies"
@@ -7,15 +6,11 @@ import MoviesGenres from "./Sections/MainPage/MoviesGenres/MoviesGenres";
 import { useGetPopularMovies } from "./useCases/Movies/useGetMovies";
 
 function App() {
-  const [selectedLanguage, setSelectedLanguage] = useState(() => {
-    return localStorage.getItem("@cn_language")
-  })
-
   const { data: movies, isLoading, isFetching } = useGetPopularMovies()
 
   return (
     <>
-      <Header selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} />
+      <Header />
 
       <section className="w-full">
         <SlidersMovie
