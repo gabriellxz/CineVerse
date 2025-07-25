@@ -14,10 +14,11 @@ interface Props {
 export default function SlidersMovie({ movies }: Props) {
 
     const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
-    const { data: videoMovie } = useGetVideosMovies(selectedMovieId ?? 0);
+    const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? 0);
 
-    const getVidesMovies = (id: number) => {
+    const getVidesMovies = async (id: number) => {
         setSelectedMovieId(id);
+        await fetchVideo()
     };
 
     return (
