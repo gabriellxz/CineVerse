@@ -5,7 +5,7 @@ import { useGetToRatedMovies } from "@/useCases/Movies/useGetMovies";
 
 export default function TopRated() {
 
-    const {data: moviesTopRated, error, isLoading } = useGetToRatedMovies()
+    const {data: moviesTopRated } = useGetToRatedMovies()
 
     return (
         <>

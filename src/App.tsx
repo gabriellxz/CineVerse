@@ -11,7 +11,7 @@ function App() {
     return localStorage.getItem("@cn_language")
   })
 
-  const { data: movies  } = useGetPopularMovies()
+  const { data: movies } = useGetPopularMovies()
 
   return (
     <>
