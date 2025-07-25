@@ -9,7 +9,7 @@ function App() {
   const { data: movies, isLoading, isFetching } = useGetPopularMovies()
 
   return (
-    <>
+    <div>
       <Header />
 
       <section className="w-full">
@@ -29,7 +29,11 @@ function App() {
           movies={movies}
         />
       </section>
-    </>
+
+      <footer className="fixed z-20 bottom-0 w-full text-center text-white bg-zinc-900">
+        <p>© Desenvolvido por Gabriel Silva - 2025</p>
+      </footer>
+    </div>
   );
 }
 
