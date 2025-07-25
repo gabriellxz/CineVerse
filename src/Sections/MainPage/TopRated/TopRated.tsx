@@ -2,10 +2,18 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import type { Movies } from "@/types/movies";
 import * as motion from "motion/react-client"
 import { useGetToRatedMovies } from "@/useCases/Movies/useGetMovies";
+import SkeletonCarousel from "@/Layouts/SkeletonCarousel/SkeletonCarousel";
 
 export default function TopRated() {
 
-    const {data: moviesTopRated } = useGetToRatedMovies()
+    const { data: moviesTopRated, isLoading } = useGetToRatedMovies()
+
+    if (isLoading) {
+        return <SkeletonCarousel
+            title={"Top 10"}
+            className="p-1"
+        />
+    }
 
     return (
         <>

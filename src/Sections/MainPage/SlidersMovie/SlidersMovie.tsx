@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Modal from "@/Layouts/Modal/Modal";
+import SkeletonSliders from "@/Layouts/SkeletonSliders/SkeletonSliders";
 import type { Movies } from "@/types/movies";
 import { useGetVideosMovies } from "@/useCases/Movies/useGetMovies";
 import Autoplay from "embla-carousel-autoplay";
@@ -9,9 +10,10 @@ import { useState } from "react";
 
 interface Props {
     movies: Movies[] | undefined;
+    isLoading: boolean;
 }
 
-export default function SlidersMovie({ movies }: Props) {
+export default function SlidersMovie({ movies, isLoading }: Props) {
 
     const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
     const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? 0);
@@ -20,6 +22,10 @@ export default function SlidersMovie({ movies }: Props) {
         setSelectedMovieId(id);
         await fetchVideo()
     };
+
+    if (isLoading) {
+        <SkeletonSliders />
+    }
 
     return (
         <div className="w-full">

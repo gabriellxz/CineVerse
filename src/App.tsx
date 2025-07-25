@@ -11,20 +11,26 @@ function App() {
     return localStorage.getItem("@cn_language")
   })
 
-  const { data: movies } = useGetPopularMovies()
+  const { data: movies, isLoading } = useGetPopularMovies()
 
   return (
     <>
       <Header selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} />
 
       <section className="w-full">
-        <SlidersMovie movies={movies} />
+        <SlidersMovie
+          isLoading={isLoading}
+          movies={movies}
+        />
       </section>
 
       <section className="w-full">
-        <MoviesGenres selectedLanguage={selectedLanguage} />
+        <MoviesGenres />
         <TopRated />
-        <PopularMovies movies={movies} />
+        <PopularMovies
+          isLoading={isLoading}
+          movies={movies}
+        />
       </section>
     </>
   );

@@ -1,33 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { api } from "@/config/api";
+import SkeletonMoviesByGenres from "@/Layouts/SkeletonMoviesByGenres/SkeletonMoviesByGenres";
 import type { Movies } from "@/types/movies";
-import { useEffect, useState } from "react";
+import { useGetMoviesByGenres } from "@/useCases/Genres/useGetGenresMovies";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function MoviesByGenres() {
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const genreId = searchParams.get("genreId");
-    const genreName = searchParams.get("genreName");
+    let genreId = searchParams.get("genreId");
+    let genreName = searchParams.get("genreName");
 
-    const language = localStorage.getItem("@cn_language")
+    const { data: moviesByGenres, isLoading } = useGetMoviesByGenres(genreId ?? "")
 
-    const [moviesByGenres, setMoviesByGenres] = useState<Movies[]>([]);
-
-    useEffect(() => {
-        async function getMoviesByGenres() {
-            try {
-                const response = await api.get(`/discover/movie?api_key=${import.meta.env.VITE_API_KEY}&with_genres=${genreId}&language=${language}`);
-                console.log(response.data);
-                setMoviesByGenres(response.data.results);
-            } catch (error) {
-                console.error("Error fetching movies by genres:", error);
-            }
-        }
-
-        getMoviesByGenres();
-    }, [])
+    if (isLoading) {
+        return <SkeletonMoviesByGenres />
+    }
 
     return (
         <div className="p-5">
@@ -40,7 +28,7 @@ export default function MoviesByGenres() {
             </div>
             <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
                 {
-                    moviesByGenres.map((movie: Movies) => (
+                    moviesByGenres?.map((movie: Movies) => (
                         <div key={movie.id}>
                             <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                         </div>

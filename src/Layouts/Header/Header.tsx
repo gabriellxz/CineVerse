@@ -22,7 +22,7 @@ export default function Header({ setSelectedLanguage, selectedLanguage }: Props)
     }
 
     return (
-        <header className="flex items-center justify-between p-5 w-full fixed z-10 bg-white/10 backdrop-blur-md gap-5">
+        <header className="flex items-center justify-between p-5 w-full fixed z-20 bg-white/10 backdrop-blur-md gap-5">
             <div className="flex items-center gap-2">
                 <h1 className="text-white text-3xl font-bold ">CineVerse</h1>
                 <div>
