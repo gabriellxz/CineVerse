@@ -20,7 +20,7 @@ export default function SkeletonCarousel({ title, className }: Props) {
                             <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
                                 <div className={className}>
                                     <div className="relative">
-                                        <Skeleton className="w-full aspect-[2/3] bg-zinc-700" />
+                                        <Skeleton className="w-full aspect-[2/3] bg-zinc-800" />
                                     </div>
                                 </div>
                             </CarouselItem>

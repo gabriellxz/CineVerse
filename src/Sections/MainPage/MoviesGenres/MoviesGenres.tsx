@@ -37,9 +37,9 @@ export default function MoviesGenres() {
         navigate(`/movies?${query.toString()}`);
     }
 
-    const { data: moviesGenres, isLoading } = useGetGenresMovies()
+    const { data: moviesGenres, isLoading, isFetching } = useGetGenresMovies()
 
-    if(isLoading) {
+    if(isLoading || isFetching) {
         return <SkeletonCarousel 
             className="p-1 h-[100px] rounded-xl"
             title="Gêneros"

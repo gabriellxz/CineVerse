@@ -11,9 +11,9 @@ export default function MoviesByGenres() {
     let genreId = searchParams.get("genreId");
     let genreName = searchParams.get("genreName");
 
-    const { data: moviesByGenres, isLoading } = useGetMoviesByGenres(genreId ?? "")
+    const { data: moviesByGenres, isLoading,isFetching } = useGetMoviesByGenres(genreId ?? "")
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return <SkeletonMoviesByGenres />
     }
 

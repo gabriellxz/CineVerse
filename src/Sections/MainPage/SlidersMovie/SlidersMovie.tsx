@@ -11,9 +11,10 @@ import { useState } from "react";
 interface Props {
     movies: Movies[] | undefined;
     isLoading: boolean;
+    isFetching: boolean;
 }
 
-export default function SlidersMovie({ movies, isLoading }: Props) {
+export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
 
     const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
@@ -36,7 +37,7 @@ export default function SlidersMovie({ movies, isLoading }: Props) {
         setOpenModal(open)
     }
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return <SkeletonSliders />
     }
 

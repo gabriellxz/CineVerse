@@ -6,11 +6,12 @@ import * as motion from "motion/react-client"
 interface Props {
     movies: Movies[] | undefined;
     isLoading: boolean;
+    isFetching: boolean
 }
 
-export default function PopularMovies({ movies, isLoading }: Props) {
+export default function PopularMovies({ movies, isLoading, isFetching }: Props) {
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return (
             <SkeletonCarousel
                 title="Filmes populares"

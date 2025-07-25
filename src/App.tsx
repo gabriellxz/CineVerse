@@ -11,7 +11,7 @@ function App() {
     return localStorage.getItem("@cn_language")
   })
 
-  const { data: movies, isLoading } = useGetPopularMovies()
+  const { data: movies, isLoading, isFetching } = useGetPopularMovies()
 
   return (
     <>
@@ -20,6 +20,7 @@ function App() {
       <section className="w-full">
         <SlidersMovie
           isLoading={isLoading}
+          isFetching={isFetching}
           movies={movies}
         />
       </section>
@@ -29,6 +30,7 @@ function App() {
         <TopRated />
         <PopularMovies
           isLoading={isLoading}
+          isFetching={isFetching}
           movies={movies}
         />
       </section>
