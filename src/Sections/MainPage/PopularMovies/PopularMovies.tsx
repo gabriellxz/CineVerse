@@ -1,8 +1,9 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import type { Movies } from "@/types/movies";
+import * as motion from "motion/react-client"
 
 interface Props {
-    movies: Movies[];
+    movies: Movies[] | undefined;
 }
 
 export default function PopularMovies({ movies }: Props) {
@@ -15,13 +16,17 @@ export default function PopularMovies({ movies }: Props) {
             <div className="mt-4">
                 <Carousel className="w-full overflow-hidden relative">
                     <CarouselContent className="-ml-1">
-                        {movies.map((movie: Movies) => (
+                        {movies?.map((movie: Movies) => (
                             <CarouselItem key={movie.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
-                                <div className="p-1">
+                                <motion.div
+                                    whileHover={{ scale: 1.2 }}
+                                    whileTap={{ scale: 0.8 }}
+                                    className="p-1"
+                                >
                                     <div>
                                         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                                     </div>
-                                </div>
+                                </motion.div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>

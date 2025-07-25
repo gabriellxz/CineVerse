@@ -1,29 +1,11 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { api } from "@/config/api";
 import type { Movies } from "@/types/movies";
-import { useEffect, useState } from "react";
+import * as motion from "motion/react-client"
+import { useGetToRatedMovies } from "@/useCases/Movies/useGetMovies";
 
-interface Props {
-    selectedLanguage: string | null;
-}
+export default function TopRated() {
 
-export default function TopRated({ selectedLanguage }: Props) {
-
-    const [moviesTopRated, setMoviesTopRated] = useState<Movies[]>([]);
-
-    useEffect(() => {
-        async function getMoviesTopRated() {
-            try {
-                const response = await api.get(`/movie/top_rated?api_key=${import.meta.env.VITE_API_KEY}&language=${selectedLanguage}`);
-                // console.log(response.data);
-                setMoviesTopRated(response.data.results);
-            } catch (error) {
-                console.error("Error fetching top-rated movies:", error);
-            }
-        }
-
-        getMoviesTopRated();
-    }, [selectedLanguage])
+    const {data: moviesTopRated, error, isLoading } = useGetToRatedMovies()
 
     return (
         <>
@@ -34,9 +16,13 @@ export default function TopRated({ selectedLanguage }: Props) {
             <div className="mt-4">
                 <Carousel className="w-full overflow-hidden relative">
                     <CarouselContent className="-ml-1">
-                        {moviesTopRated.slice(0, 10).map((movie: Movies, index) => (
+                        {moviesTopRated?.slice(0, 10).map((movie: Movies, index) => (
                             <CarouselItem key={movie.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
-                                <div className="p-1">
+                                <motion.div
+                                    whileHover={{ scale: 1.2 }}
+                                    whileTap={{ scale: 0.8 }}
+                                    className="p-1"
+                                >
                                     <div className="relative">
                                         <div
                                             className="absolute top-0 left-0 w-40 h-40 z-10"
@@ -51,7 +37,7 @@ export default function TopRated({ selectedLanguage }: Props) {
                                         </span>
                                         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                                     </div>
-                                </div>
+                                </motion.div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>

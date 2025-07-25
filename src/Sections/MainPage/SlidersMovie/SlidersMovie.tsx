@@ -1,29 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { api } from "@/config/api";
 import Modal from "@/Layouts/Modal/Modal";
 import type { Movies } from "@/types/movies";
+import { useGetVideosMovies } from "@/useCases/Movies/useGetMovies";
 import Autoplay from "embla-carousel-autoplay";
 import { useState } from "react";
 
 interface Props {
-    movies: Movies[];
+    movies: Movies[] | undefined;
 }
 
 export default function SlidersMovie({ movies }: Props) {
 
-    const [videoMovie, setVideMovie] = useState("")
+    const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+    const { data: videoMovie } = useGetVideosMovies(selectedMovieId ?? 0);
 
-    async function getVidesMovies(movieId: number) {
-        try {
-            const response = await api.get(`/movie/${movieId}/videos?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
-            console.log(response.data.results[0].key)
-            setVideMovie(response.data.results[0].key)
-        } catch (error) {
-            console.error("Houve um erro na requisição do filme: ", error)
-        }
-    }
+    const getVidesMovies = (id: number) => {
+        setSelectedMovieId(id);
+    };
 
     return (
         <div className="w-full">
@@ -37,7 +32,7 @@ export default function SlidersMovie({ movies }: Props) {
             >
                 <CarouselContent>
                     {
-                        movies.slice(2, 7).map((movie: Movies) => (
+                        movies?.slice(2, 7).map((movie: Movies) => (
                             <CarouselItem key={movie.id} className="relative">
                                 <img
                                     src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
@@ -57,7 +52,7 @@ export default function SlidersMovie({ movies }: Props) {
                                         <DialogContent className="max-w-[800px] max-sm:max-w-[95vw] w-full p-0 bg-neutral-900 rounded-lg border-none">
                                             <iframe
                                                 className="w-full aspect-video rounded-t-lg"
-                                                src={`https://www.youtube.com/embed/${videoMovie}?autoplay=1`}
+                                                src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0].key}?autoplay=1`}
                                                 allowFullScreen
                                             />
                                         </DialogContent>
