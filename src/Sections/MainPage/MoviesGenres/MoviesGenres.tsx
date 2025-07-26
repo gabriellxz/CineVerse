@@ -56,7 +56,7 @@ export default function MoviesGenres() {
                 <Carousel className="w-full overflow-hidden relative">
                     <CarouselContent className="-ml-1 flex gap-4">
                         {moviesGenres?.map((genre: Genres) => (
-                            <CarouselItem onClick={() => onNavigateToGenre(genre.id, genre.name)} key={genre.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8 select-none">
+                            <CarouselItem onClick={() => onNavigateToGenre(genre.id, genre.name)} key={genre.id} className="pl-1 basis-1/3 md:basis-1/3 lg:basis-1/5 xl:basis-1/8 select-none">
                                 <div className={`p-1 h-[100px] rounded-xl flex justify-center items-center text-2xl`} style={{ backgroundColor: genreColorMap[genre.id] }}>
                                     <h2 className="text-white font-bold">{genre.name}</h2>
                                 </div>

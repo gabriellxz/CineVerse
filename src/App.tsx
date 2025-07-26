@@ -26,7 +26,7 @@ function App() {
         />
       </section>
 
-      <section className="w-full">
+      <section className="w-full mb-7">
         <MoviesGenres />
         <TopRated />
         <PopularMovies
