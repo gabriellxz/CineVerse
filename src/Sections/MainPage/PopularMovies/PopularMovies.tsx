@@ -30,7 +30,7 @@ export default function PopularMovies({ movies, isLoading, isFetching }: Props) 
                 <Carousel className="w-full overflow-hidden relative">
                     <CarouselContent className="-ml-1">
                         {movies?.map((movie: Movies) => (
-                            <CarouselItem key={movie.id} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
+                            <CarouselItem key={movie.id} className="pl-1 basis-1/3 md:basis-1/3 lg:basis-1/5 xl:basis-1/8">
                                 <motion.div
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.8 }}

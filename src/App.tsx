@@ -6,7 +6,13 @@ import MoviesGenres from "./Sections/MainPage/MoviesGenres/MoviesGenres";
 import { useGetPopularMovies } from "./useCases/Movies/useGetMovies";
 
 function App() {
-  const { data: movies, isLoading, isFetching } = useGetPopularMovies()
+  const { data: movies, isLoading, isFetching, error } = useGetPopularMovies()
+
+  if(error) {
+    return <div>
+      <p className="text-white text-center p-5">Houve um erro no processamento, verifique sua conexão ou tente mais tarde.</p>
+    </div>
+  }
 
   return (
     <div>
