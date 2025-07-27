@@ -45,7 +45,7 @@ export default function SearchPage() {
                     <h1 className="text-white text-2xl font-bold uppercase">resultados da busca</h1>
                     <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
                 </div>
-                <div className="flex flex-col gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                     {[...Array(10)].map((_, index) => (
                         <div key={index} className="flex items-center gap-5">
                             {/* Skeleton para o poster */}
@@ -86,28 +86,8 @@ export default function SearchPage() {
                                 <h1 className="text-white text-2xl font-bold uppercase">resultados da busca</h1>
                                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
                             </div>
-                            {listSearch?.map((movie: Movies) => (
-                                <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
-                                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="max-w-[150px] w-full rounded-md" />
-                                    <div>
-                                        <div>
-                                            <p className="font-bold">{movie.title}</p>
-                                            <p className="text-sm text-gray-400">
-                                                {getGenreNames(movie.genre_ids, genres).join(", ")}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <>
-                            <div className="flex flex-col">
-                                <h1 className="text-white text-2xl font-bold uppercase">buscas populares</h1>
-                                <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
-                            </div>
-                            {
-                                moviesList?.map((movie: Movies) => (
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                                {listSearch?.map((movie: Movies) => (
                                     <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
                                         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="max-w-[150px] w-full rounded-md" />
                                         <div>
@@ -119,8 +99,32 @@ export default function SearchPage() {
                                             </div>
                                         </div>
                                     </div>
-                                ))
-                            }
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex flex-col">
+                                <h1 className="text-white text-2xl font-bold uppercase">buscas populares</h1>
+                                <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                                {
+                                    moviesList?.map((movie: Movies) => (
+                                        <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
+                                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="max-w-[150px] w-full rounded-md" />
+                                            <div>
+                                                <div>
+                                                    <p className="font-bold">{movie.title}</p>
+                                                    <p className="text-sm text-gray-400">
+                                                        {getGenreNames(movie.genre_ids, genres).join(", ")}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </>
                     )
                 }
