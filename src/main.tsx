@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import MoviesByGenres from './Pages/MoviesByGenres/MoviesByGenres.tsx'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import SearchPage from './Pages/SearchPage/SearchPage.tsx'
+import MovieDetails from './Pages/MovieDetails/MovieDetails.tsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <SearchPage/>
+  },
+  {
+    path: "/movie-details",
+    element: <MovieDetails/>
   }
 ])
 

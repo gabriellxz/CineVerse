@@ -16,6 +16,11 @@ export async function getVideosMovies(movieId: number) {
 }
 
 export async function getSearchMovies(search:string) {
-    const response = await api.get(`https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_API_KEY}&query=${search}&language=pt-BR`)
+    const response = await api.get(`/search/movie?api_key=${import.meta.env.VITE_API_KEY}&query=${search}&language=pt-BR`)
     return response.data.results
 }
+
+export async function getMovieById(movieId: string) {
+    const response = await api.get(`/movie/${movieId}?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
+    return response.data
+} 

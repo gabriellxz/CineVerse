@@ -1,4 +1,5 @@
-import { getSearchMovies, getPopularMovies, getTopRatedMovies, getVideosMovies } from "@/api/endpoints/getMovies";
+import { getSearchMovies, getPopularMovies, getTopRatedMovies, getVideosMovies, getMovieById } from "@/api/endpoints/getMovies";
+import type { MovieDetails } from "@/types/movieDetails";
 import type { Movies } from "@/types/movies";
 import type { Videos } from "@/types/videos";
 import { useQuery } from "@tanstack/react-query";
@@ -30,5 +31,12 @@ export function useGetSearchMovies(search: string) {
         queryKey: ["searchMovies"],
         queryFn: () => getSearchMovies(search),
         enabled: false
+    })
+}
+
+export function useGetMovieById(movieId: string) {
+    return useQuery<MovieDetails>({
+        queryKey: ["movieById"],
+        queryFn: () => getMovieById(movieId),
     })
 }
