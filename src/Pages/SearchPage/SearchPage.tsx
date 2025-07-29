@@ -1,3 +1,4 @@
+import CardMovie from "@/components/CardMovie/CardMovie"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -89,8 +90,10 @@ export default function SearchPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                                 {listSearch?.map((movie: Movies) => (
                                     <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
-                                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="max-w-[150px] w-full rounded-md" />
-                                        <div>
+                                        <div className="w-full">
+                                            <CardMovie movie={movie} className="max-w-[150px] w-full" />
+                                        </div>
+                                        <div className="w-full">
                                             <div>
                                                 <p className="font-bold">{movie.title}</p>
                                                 <p className="text-sm text-gray-400">
@@ -112,8 +115,10 @@ export default function SearchPage() {
                                 {
                                     moviesList?.map((movie: Movies) => (
                                         <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
-                                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="max-w-[150px] w-full rounded-md" />
-                                            <div>
+                                            <div className="w-full">
+                                                <CardMovie movie={movie} className="max-w-[150px] w-full" />
+                                            </div>
+                                            <div className="w-full">
                                                 <div>
                                                     <p className="font-bold">{movie.title}</p>
                                                     <p className="text-sm text-gray-400">

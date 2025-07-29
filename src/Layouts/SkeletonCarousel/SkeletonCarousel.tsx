@@ -8,8 +8,8 @@ interface Props {
 
 export default function SkeletonCarousel({ title, className }: Props) {
     return (
-        <>
-            <div className="flex flex-col m-5">
+        <div className="m-5">
+            <div className="flex flex-col">
                 <h1 className="text-white text-2xl font-bold uppercase">{title}</h1>
                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
             </div>
@@ -17,7 +17,7 @@ export default function SkeletonCarousel({ title, className }: Props) {
                 <Carousel className="w-full overflow-hidden relative">
                     <CarouselContent className="-ml-1">
                         {[...Array(10)].map((_, index) => (
-                            <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/8">
+                            <CarouselItem key={index} className="pl-1 basis-1/3 md:basis-1/3 lg:basis-1/5 xl:basis-1/8">
                                 <div className={className}>
                                     <div className="relative">
                                         <Skeleton className="w-full aspect-[2/3] bg-zinc-800" />
@@ -34,6 +34,6 @@ export default function SkeletonCarousel({ title, className }: Props) {
                     </CarouselNext>
                 </Carousel>
             </div>
-        </>
+        </div>
     )
 }

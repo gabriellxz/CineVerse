@@ -9,8 +9,8 @@ export default function MoviesByGenres() {
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    let genreId = searchParams.get("genreId");
-    let genreName = searchParams.get("genreName");
+    const genreId = searchParams.get("genreId");
+    const genreName = searchParams.get("genreName");
 
     const { data: moviesByGenres, isLoading, isFetching } = useGetMoviesByGenres(genreId ?? "")
 

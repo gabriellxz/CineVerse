@@ -10,7 +10,7 @@ interface Props {
 export default function Modal({
     children,
     onOpenChange,
-    open
+    open,
 }: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>

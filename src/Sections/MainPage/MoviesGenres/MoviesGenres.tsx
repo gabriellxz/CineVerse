@@ -47,8 +47,8 @@ export default function MoviesGenres() {
     }
 
     return (
-        <>
-            <div className="flex flex-col m-5">
+        <div className="m-5">
+            <div className="flex flex-col">
                 <h1 className="text-white text-2xl font-bold uppercase">Gêneros</h1>
                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
             </div>
@@ -71,6 +71,6 @@ export default function MoviesGenres() {
                     </CarouselNext>
                 </Carousel>
             </div>
-        </>
+        </div>
     )
 }
