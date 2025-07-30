@@ -1,5 +1,6 @@
 import CardMovie from "@/components/CardMovie/CardMovie"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import Modal from "@/Layouts/Modal/Modal"
 import type { Movies } from "@/types/movies"
 import { useGetMovieById, useGetPopularMovies, useGetVideosMovies } from "@/useCases/Movies/useGetMovies"
@@ -10,12 +11,15 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 export default function MovieDetails() {
 
     const navigate = useNavigate()
+
+    
     const [searchParams] = useSearchParams()
     // const movieName = searchParams.get("movieName")
     const movieId = searchParams.get("movieId")
-
-    const { data: movieDetails } = useGetMovieById(movieId ?? "")
+    
+    const { data: movieDetails, isLoading, isFetching } = useGetMovieById(movieId ?? "")
     const { data: movies } = useGetPopularMovies()
+    const filterMovie = movies?.filter((movie:Movies) => movie.id !== Number(movieId))
 
     const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
@@ -36,6 +40,63 @@ export default function MovieDetails() {
         }
 
         setOpenModal(open)
+    }
+
+    if (isLoading || isFetching) {
+        return (
+            <div>
+                {/* Seção do banner */}
+                <div className="relative">
+                    <Skeleton className="absolute m-7 h-10 w-24 rounded-md z-10 bg-zinc-700" />
+
+                    {/* Banner */}
+                    <Skeleton className="w-full h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-b-2xl bg-zinc-700" />
+
+                    {/* Overlay do banner */}
+                    <div className="absolute top-0 left-0 w-full h-full bg-black/65 flex flex-col items-start justify-end p-7 gap-3">
+                        <Skeleton className="h-12 w-full max-w-[80%] rounded-md bg-zinc-700" />
+                        <Skeleton className="h-12 w-48 rounded-md bg-zinc-700" />
+                    </div>
+                </div>
+
+                {/* Seção de detalhes */}
+                <div className="text-white m-5 flex flex-col gap-5">
+                    {/* Título e avaliação */}
+                    <div className="flex gap-5 items-center">
+                        <Skeleton className="h-6 w-48 rounded-md bg-zinc-700" />
+                        <Skeleton className="h-6 w-10 rounded-md bg-zinc-700" />
+                    </div>
+
+                    {/* País e data */}
+                    <div className="flex gap-5 items-center">
+                        <Skeleton className="h-5 w-24 rounded-md bg-zinc-700" />
+                        <Skeleton className="h-5 w-24 rounded-md bg-zinc-700" />
+                    </div>
+
+                    {/* Sinopse */}
+                    <div>
+                        <Skeleton className="h-5 w-20 mb-2 rounded-md bg-zinc-700" />
+                        <div className="space-y-2">
+                            <Skeleton className="h-4 w-full rounded-md bg-zinc-700" />
+                            <Skeleton className="h-4 w-full rounded-md bg-zinc-700" />
+                            <Skeleton className="h-4 w-3/4 rounded-md bg-zinc-700" />
+                        </div>
+                    </div>
+
+                    <Skeleton className="w-full max-w-[500px] h-[1px] bg-zinc-700" />
+
+                    {/* Recomendações */}
+                    <div>
+                        <Skeleton className="h-5 w-48 mb-4 rounded-md bg-zinc-700" />
+                        <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
+                            {[...Array(6)].map((_, i) => (
+                                <Skeleton key={i} className="w-full aspect-[2/3] rounded-lg bg-zinc-700" />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -87,8 +148,8 @@ export default function MovieDetails() {
                     <p className="font-bold">Você também pode gostar</p>
                     <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
                         {
-                            movies?.slice(0, 6).map((movie: Movies) => (
-                                <CardMovie movie={movie}/>
+                            filterMovie?.slice(0, 6).map((movie: Movies) => (
+                                <CardMovie movie={movie} />
                             ))
                         }
                     </div>
