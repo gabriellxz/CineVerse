@@ -148,8 +148,8 @@ export default function MovieDetails() {
                     <p className="font-bold">Você também pode gostar</p>
                     <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
                         {
-                            filterMovie?.slice(0, 6).map((movie: Movies) => (
-                                <CardMovie movie={movie} />
+                            filterMovie?.slice(0, 10).map((movie: Movies) => (
+                                <CardMovie movie={movie} key={movie.id}/>
                             ))
                         }
                     </div>

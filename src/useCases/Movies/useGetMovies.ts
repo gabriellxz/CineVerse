@@ -36,8 +36,8 @@ export function useGetSearchMovies(search: string) {
 
 export function useGetMovieById(movieId: string) {
     return useQuery<MovieDetails>({
-        queryKey: ["movieById"],
+        queryKey: ["movieById", movieId],
         queryFn: () => getMovieById(movieId),
-        enabled: false
+        enabled: !!movieId
     })
 }
