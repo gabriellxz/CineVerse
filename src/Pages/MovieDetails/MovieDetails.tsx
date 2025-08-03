@@ -21,14 +21,14 @@ export default function MovieDetails() {
     const { data: movies } = useGetPopularMovies()
     const filterMovie = movies?.filter((movie:Movies) => movie.id !== Number(movieId))
 
-    const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+    const [selectedMovieId, setSelectedMovieId] = useState("");
 
     //estado para monitorar se o modal está aberto ou fechado (o modal não depende desse estado para abrir ou fechae)
     const [openModal, setOpenModal] = useState(false)
 
-    const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? 0);
+    const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? "");
 
-    const getVidesMovies = async (id: number) => {
+    const getVidesMovies = async (id: string) => {
         setSelectedMovieId(id);
         await fetchVideo()
         setOpenModal(true)
@@ -36,7 +36,7 @@ export default function MovieDetails() {
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {
-            setSelectedMovieId(null)
+            setSelectedMovieId("")
         }
 
         setOpenModal(open)
@@ -116,14 +116,14 @@ export default function MovieDetails() {
                     </p>
                     <Modal open={openModal} onOpenChange={handleModalOpenChange}>
                         <DialogTrigger>
-                            <Button onClick={() => getVidesMovies(Number(movieId))} className="md:p-7 sm:text-xl font-bold bg-transparent border-[1px] border-white">
+                            <Button onClick={() => getVidesMovies(String(movieDetails?.id) ?? "")} className="md:p-7 sm:text-xl font-bold bg-transparent border-[1px] border-white">
                                 Assistir trailer
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-[800px] max-sm:max-w-[95vw] w-full p-0 bg-neutral-900 rounded-lg border-none">
                             <iframe
                                 className="w-full aspect-video rounded-t-lg"
-                                src={`https://www.youtube.com/embed/${videoMovie && videoMovie[movieDetails?.id ?? 0] && videoMovie[movieDetails?.id ?? 0].key}?autoplay=1`}
+                                src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0] && videoMovie[0].key}?autoplay=1`}
                                 allowFullScreen
                             />
                         </DialogContent>

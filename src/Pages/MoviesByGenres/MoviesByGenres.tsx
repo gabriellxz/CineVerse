@@ -3,7 +3,7 @@ import SkeletonMoviesByGenres from "@/Layouts/SkeletonMoviesByGenres/SkeletonMov
 import type { Movies } from "@/types/movies";
 import { useGetMoviesByGenres } from "@/useCases/Genres/useGetGenresMovies";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import * as motion from "motion/react-client"
+import CardMovie from "@/components/CardMovie/CardMovie";
 
 export default function MoviesByGenres() {
 
@@ -30,13 +30,7 @@ export default function MoviesByGenres() {
             <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
                 {
                     moviesByGenres?.map((movie: Movies) => (
-                        <motion.div
-                            key={movie.id}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.8 }}
-                        >
-                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="rounded-md"/>
-                        </motion.div>
+                        <CardMovie movie={movie} key={movie.id}/>
                     ))
                 }
             </div>

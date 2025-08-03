@@ -10,12 +10,12 @@ export async function getTopRatedMovies() {
     return response.data.results
 }
 
-export async function getVideosMovies(movieId: number) {
+export async function getVideosMovies(movieId: string) {
     const response = await api.get(`/movie/${movieId}/videos?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
     return response.data.results
 }
 
-export async function getSearchMovies(search:string) {
+export async function getSearchMovies(search: string) {
     const response = await api.get(`/search/movie?api_key=${import.meta.env.VITE_API_KEY}&query=${search}&language=pt-BR`)
     return response.data.results
 }

@@ -16,14 +16,14 @@ interface Props {
 
 export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
 
-    const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+    const [selectedMovieId, setSelectedMovieId] = useState("");
 
     //estado para monitorar se o modal está aberto ou fechado (o modal não depende desse estado para abrir ou fechae)
     const [openModal, setOpenModal] = useState(false)
 
-    const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? 0);
+    const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? "");
 
-    const getVidesMovies = async (id: number) => {
+    const getVidesMovies = async (id: string) => {
         setSelectedMovieId(id);
         await fetchVideo()
         setOpenModal(true)
@@ -31,7 +31,7 @@ export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
 
     const handleModalOpenChange = (open: boolean) => {
         if (!open) {
-            setSelectedMovieId(null)
+            setSelectedMovieId("")
         }
 
         setOpenModal(open)
@@ -46,7 +46,7 @@ export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
             <Carousel
                 plugins={[
                     Autoplay({
-                        delay: 2000
+                        delay: 5000
                     })
                 ]}
                 className="w-full relative overflow-hidden"
@@ -66,14 +66,14 @@ export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
                                     </p>
                                     <Modal open={openModal} onOpenChange={handleModalOpenChange}>
                                         <DialogTrigger>
-                                            <Button onClick={() => getVidesMovies(movie.id)} className="md:p-7 sm:text-xl font-bold">
+                                            <Button onClick={() => getVidesMovies(String(movie.id))} className="md:p-7 sm:text-xl font-bold">
                                                 Assistir trailer
                                             </Button>
                                         </DialogTrigger>
                                         <DialogContent className="max-w-[800px] max-sm:max-w-[95vw] w-full p-0 bg-neutral-900 rounded-lg border-none">
                                             <iframe
                                                 className="w-full aspect-video rounded-t-lg"
-                                                src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0].key}?autoplay=1`}
+                                                src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0] && videoMovie[0].key}?autoplay=1`}
                                                 allowFullScreen
                                             />
                                         </DialogContent>

@@ -18,11 +18,11 @@ export function useGetToRatedMovies() {
     })
 }
 
-export function useGetVideosMovies(movieId: number) {
+export function useGetVideosMovies(movieId: string) {
     return useQuery<Videos[]>({
-        queryKey: ["video"],
+        queryKey: ["video", movieId],
         queryFn: () => getVideosMovies(movieId),
-        enabled: false
+        enabled: !!movieId
     })
 }
 
