@@ -84,7 +84,7 @@ export default function SearchPage() {
                     searchTerm ? (
                         <div className="flex flex-col gap-3 mt-5">
                             <div className="flex flex-col">
-                                <h1 className="text-white text-2xl font-bold uppercase">resultados da busca</h1>
+                                <h1 className="text-white text-xl font-light uppercase">resultados da busca</h1>
                                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
@@ -108,7 +108,7 @@ export default function SearchPage() {
                     ) : (
                         <>
                             <div className="flex flex-col">
-                                <h1 className="text-white text-2xl font-bold uppercase">buscas populares</h1>
+                                <h1 className="text-white text-xl font-light uppercase">buscas populares</h1>
                                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">

@@ -23,7 +23,7 @@ export default function MoviesByGenres() {
             <div className="w-full flex gap-5 items-center">
                 <Button onClick={() => navigate("/")}>Voltar</Button>
                 <div className="w-full flex flex-col m-5">
-                    <h1 className="text-white text-2xl font-bold uppercase">{genreName}</h1>
+                    <h1 className="text-white text-xl font-light uppercase">{genreName}</h1>
                     <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
                 </div>
             </div>
