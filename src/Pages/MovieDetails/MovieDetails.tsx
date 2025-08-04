@@ -1,45 +1,43 @@
 import CardMovie from "@/components/CardMovie/CardMovie"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import Modal from "@/Layouts/Modal/Modal"
 import type { Movies } from "@/types/movies"
 import { useGetMovieById, useGetPopularMovies, useGetVideosMovies } from "@/useCases/Movies/useGetMovies"
-import { DialogContent, DialogTrigger } from "@radix-ui/react-dialog"
 import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import { IoMdClose } from "react-icons/io";
 
 export default function MovieDetails() {
 
     const navigate = useNavigate()
-
-    
     const [searchParams] = useSearchParams()
-    // const movieName = searchParams.get("movieName")
+
     const movieId = searchParams.get("movieId")
-    
+
     const { data: movieDetails, isLoading, isFetching } = useGetMovieById(movieId ?? "")
+
     const { data: movies } = useGetPopularMovies()
-    const filterMovie = movies?.filter((movie:Movies) => movie.id !== Number(movieId))
+    const filterMovie = movies?.filter((movie: Movies) => movie.id !== Number(movieId))
 
     const [selectedMovieId, setSelectedMovieId] = useState("");
 
     //estado para monitorar se o modal está aberto ou fechado (o modal não depende desse estado para abrir ou fechae)
-    const [openModal, setOpenModal] = useState(false)
+    const [showTrailer, setShowTrailer] = useState(false)
 
     const { data: videoMovie, refetch: fetchVideo } = useGetVideosMovies(selectedMovieId ?? "");
 
     const getVidesMovies = async (id: string) => {
         setSelectedMovieId(id);
         await fetchVideo()
-        setOpenModal(true)
+        setShowTrailer(true)
     };
 
-    const handleModalOpenChange = (open: boolean) => {
+    const handleModalOpenChange = (showTrailer: boolean) => {
         if (!open) {
             setSelectedMovieId("")
         }
 
-        setOpenModal(open)
+        setShowTrailer(showTrailer)
     }
 
     if (isLoading || isFetching) {
@@ -102,33 +100,43 @@ export default function MovieDetails() {
     return (
         <div>
             <div className="relative">
-                <Button className="absolute m-7 bg-transparent border-[1px] border-white z-10" onClick={() => navigate("/")}>
-                    Voltar
-                </Button>
-                <img
-                    src={`https://image.tmdb.org/t/p/w1280${movieDetails?.backdrop_path}`}
-                    alt={movieDetails?.title}
-                    className="w-full object-cover rounded-b-2xl"
-                />
-                <div className="absolute top-0 left-0 w-full h-full bg-black/65 flex flex-col items-start justify-end p-7 gap-3">
-                    <p className="text-white font-bold text-xl sm:text-3xl md:text-5xl lg:text-7xl">
-                        {movieDetails?.title}
-                    </p>
-                    <Modal open={openModal} onOpenChange={handleModalOpenChange}>
-                        <DialogTrigger>
+                {
+                    !showTrailer &&
+                    <Button className="absolute m-7 bg-transparent border-[1px] border-white z-10" onClick={() => navigate("/")}>
+                        Voltar
+                    </Button>
+                }
+                {
+                    showTrailer &&
+                    <div className="relative">
+                        <Button className="absolute m-5" onClick={() => handleModalOpenChange(false)}>
+                            <IoMdClose />
+                        </Button>
+                        <iframe
+                            className="w-full object-cover rounded-b-2xl h-[300px] sm:h-[500px]"
+                            src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0] && videoMovie[0].key}?autoplay=1`}
+                            allowFullScreen
+                        />
+                    </div>
+                }
+                {
+                    !showTrailer &&
+                    <>
+                        <img
+                            src={`https://image.tmdb.org/t/p/w1280${movieDetails?.backdrop_path}`}
+                            alt={movieDetails?.title}
+                            className="w-full object-cover rounded-b-2xl"
+                        />
+                        <div className="absolute top-0 left-0 w-full h-full bg-black/65 flex flex-col items-start justify-end p-7 gap-3">
+                            <p className="text-white font-bold text-xl sm:text-3xl md:text-5xl lg:text-7xl">
+                                {movieDetails?.title}
+                            </p>
                             <Button onClick={() => getVidesMovies(String(movieDetails?.id) ?? "")} className="md:p-7 sm:text-xl font-bold bg-transparent border-[1px] border-white">
                                 Assistir trailer
                             </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-[800px] max-sm:max-w-[95vw] w-full p-0 bg-neutral-900 rounded-lg border-none">
-                            <iframe
-                                className="w-full aspect-video rounded-t-lg"
-                                src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0] && videoMovie[0].key}?autoplay=1`}
-                                allowFullScreen
-                            />
-                        </DialogContent>
-                    </Modal>
-                </div>
+                        </div>
+                    </>
+                }
             </div>
             <div className="text-white m-5 flex flex-col gap-5">
                 <div className="flex gap-5 items-center">
@@ -149,7 +157,7 @@ export default function MovieDetails() {
                     <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
                         {
                             filterMovie?.slice(0, 10).map((movie: Movies) => (
-                                <CardMovie movie={movie} key={movie.id}/>
+                                <CardMovie movie={movie} key={movie.id} />
                             ))
                         }
                     </div>
