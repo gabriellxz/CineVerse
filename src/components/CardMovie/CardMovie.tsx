@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 interface Props {
     movie: Movies
     className?: string;
+    handleModalOpenChange?: (showTrailer: boolean) => void;
 }
 
-export default function CardMovie({ movie, className }: Props) {
+export default function CardMovie({ movie, className, handleModalOpenChange }: Props) {
 
     const navigate = useNavigate()
 
@@ -16,6 +17,10 @@ export default function CardMovie({ movie, className }: Props) {
         query.set("movieName", movieName)
         query.set("movieId", movieId.toString())
         navigate(`/movie-details?${query.toString()}`)
+
+        if (handleModalOpenChange) {
+            handleModalOpenChange(false)
+        }
     }
 
 
