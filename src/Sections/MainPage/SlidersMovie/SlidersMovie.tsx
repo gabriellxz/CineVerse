@@ -7,6 +7,7 @@ import type { Movies } from "@/types/movies";
 import { useGetVideosMovies } from "@/useCases/Movies/useGetMovies";
 import Autoplay from "embla-carousel-autoplay";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     movies: Movies[] | undefined;
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
+
+    const navigate = useNavigate()
 
     const [selectedMovieId, setSelectedMovieId] = useState("");
 
@@ -39,6 +42,18 @@ export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
 
     if (isLoading || isFetching) {
         return <SkeletonSliders />
+    }
+
+    
+    function onNavigateDetailsMovie(movieName: string, movieId: number) {
+        const query = new URLSearchParams()
+        query.set("movieName", movieName)
+        query.set("movieId", movieId.toString())
+        navigate(`/movie-details?${query.toString()}`)
+
+        if (handleModalOpenChange) {
+            handleModalOpenChange(false)
+        }
     }
 
     return (
@@ -66,9 +81,14 @@ export default function SlidersMovie({ movies, isLoading, isFetching }: Props) {
                                     </p>
                                     <Modal open={openModal} onOpenChange={handleModalOpenChange}>
                                         <DialogTrigger>
-                                            <Button onClick={() => getVidesMovies(String(movie.id))} className="md:p-7 sm:text-xl font-bold">
-                                                Assistir trailer
-                                            </Button>
+                                            <div className="flex items-center gap-5">
+                                                <Button onClick={() => getVidesMovies(String(movie.id))} className="md:p-7 sm:text-xl font-bold bg-transparent border-[1px] border-white">
+                                                    Assistir trailer
+                                                </Button>
+                                                <Button className="md:p-7 sm:text-xl font-bold" onClick={() => onNavigateDetailsMovie(movie.title, movie.id)}>
+                                                    Ver detalhes
+                                                </Button>
+                                            </div>
                                         </DialogTrigger>
                                         <DialogContent className="max-w-[800px] max-sm:max-w-[95vw] w-full p-0 bg-neutral-900 rounded-lg border-none">
                                             <iframe
