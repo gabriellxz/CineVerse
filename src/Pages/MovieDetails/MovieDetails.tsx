@@ -113,7 +113,7 @@ export default function MovieDetails() {
                             <IoMdClose />
                         </Button>
                         <iframe
-                            className="w-full object-cover rounded-b-2xl h-[300px] sm:h-[500px]"
+                            className="w-full object-cover rounded-b-2xl h-[50vh] min-h-[300px] sm:h-[70vh]"
                             src={`https://www.youtube.com/embed/${videoMovie && videoMovie[0] && videoMovie[0].key}?autoplay=1`}
                             allowFullScreen
                         />
