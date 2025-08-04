@@ -18,7 +18,7 @@ export default function TopRated() {
     return (
         <div className="m-5">
             <div className="flex flex-col">
-                <h1 className="text-white text-2xl font-bold uppercase">Top 10</h1>
+                <h1 className="text-white text-xl font-light uppercase">Top 10</h1>
                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
             </div>
             <div className="mt-4">

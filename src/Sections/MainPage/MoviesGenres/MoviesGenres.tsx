@@ -49,7 +49,7 @@ export default function MoviesGenres() {
     return (
         <div className="m-5">
             <div className="flex flex-col">
-                <h1 className="text-white text-2xl font-bold uppercase">Gêneros</h1>
+                <h1 className="text-white text-xl font-light uppercase">Gêneros</h1>
                 <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
             </div>
             <div className="mt-4">
