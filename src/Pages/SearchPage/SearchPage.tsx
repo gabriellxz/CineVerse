@@ -1,139 +1,89 @@
-import CardMovie from "@/components/CardMovie/CardMovie"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Skeleton } from "@/components/ui/skeleton"
-import type { Genres } from "@/types/genres"
-import type { Movies } from "@/types/movies"
-import { useGetGenresMovies } from "@/useCases/Genres/useGetGenresMovies"
-import { useGetPopularMovies, useGetSearchMovies } from "@/useCases/Movies/useGetMovies"
-import { useState, type ChangeEvent } from "react"
-import { CiSearch } from "react-icons/ci"
-import { useNavigate } from "react-router-dom"
+import CardMovie from "@/components/CardMovie/CardMovie";
+import { Input } from "@/components/ui/input";
+import Header from "@/Layouts/Header/Header";
+import { useGetSearchMovies } from "@/useCases/Movies/useGetMovies";
+import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export default function SearchPage() {
-
-    const navigate = useNavigate()
-
-    const { data: moviesList, isLoading: loadingPopularMovies, isFetching: fetchingPopularMovies } = useGetPopularMovies()
-    const { data: genres } = useGetGenresMovies()
-
-    const [searchTerm, setSearchTerm] = useState("")
-    const [searchValue, setSearchValue] = useState("")
-    const { data: listSearch, refetch: fetchSearch, isLoading, isFetching } = useGetSearchMovies(searchValue)
-
-
-    function onChangeSearch(e: ChangeEvent<HTMLInputElement>) {
-        setSearchValue(e.target.value)
-    }
-
-    async function onSearchClick() {
-        setSearchTerm(searchValue)
-        await fetchSearch()
-    }
-
-    // Função utilitária para mapear ids de gênero para nomes
-    function getGenreNames(genreIds: number[], genresList?: Genres[]) {
-        if (!genresList) return []
-        return genreIds
-            .map(id => genresList.find(genre => genre.id === id)?.name)
-            .filter(Boolean)
-    }
-
-    if (isLoading || isFetching || loadingPopularMovies || fetchingPopularMovies) {
-        return (
-            <div className="flex flex-col gap-3 mt-5 p-5">
-                <div className="flex flex-col">
-                    <h1 className="text-white text-2xl font-bold uppercase">resultados da busca</h1>
-                    <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                    {[...Array(10)].map((_, index) => (
-                        <div key={index} className="flex items-center gap-5">
-                            {/* Skeleton para o poster */}
-                            <Skeleton className="w-[150px] h-[225px] rounded-md bg-gray-700" />
-
-                            {/* Skeleton para o texto */}
-                            <div className="space-y-2 flex-1">
-                                <Skeleton className="h-6 w-3/4 bg-gray-700" />
-                                <Skeleton className="h-4 w-1/2 bg-gray-700" />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
-    }
-
-    return (
-        <div className="p-5">
-            <div className="flex gap-3">
-                <Button onClick={() => navigate("/")}>Voltar</Button>
-                <Input
-                    type="text"
-                    placeholder="Buscar por..."
-                    className="text-white"
-                    value={searchValue}
-                    onChange={onChangeSearch}
-                />
-                <Button className="text-black bg-white" onClick={onSearchClick}>
-                    <CiSearch />
-                </Button>
-            </div>
-            <div className="flex flex-col gap-3 mt-5">
-                {
-                    searchTerm ? (
-                        <div className="flex flex-col gap-3 mt-5">
-                            <div className="flex flex-col">
-                                <h1 className="text-white text-xl font-light uppercase">resultados da busca</h1>
-                                <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                                {listSearch?.map((movie: Movies) => (
-                                    <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
-                                        <div className="w-full">
-                                            <CardMovie movie={movie} className="max-w-[150px] w-full" />
-                                        </div>
-                                        <div className="w-full">
-                                            <div>
-                                                <p className="font-bold">{movie.title}</p>
-                                                <p className="text-sm text-gray-400">
-                                                    {getGenreNames(movie.genre_ids, genres).join(", ")}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ) : (
-                        <>
-                            <div className="flex flex-col">
-                                <h1 className="text-white text-xl font-light uppercase">buscas populares</h1>
-                                <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                                {
-                                    moviesList?.map((movie: Movies) => (
-                                        <div className="flex text-white text-xl items-center gap-5" key={movie.id}>
-                                            <div className="w-full">
-                                                <CardMovie movie={movie} className="max-w-[150px] w-full" />
-                                            </div>
-                                            <div className="w-full">
-                                                <div>
-                                                    <p className="font-bold">{movie.title}</p>
-                                                    <p className="text-sm text-gray-400">
-                                                        {getGenreNames(movie.genre_ids, genres).join(", ")}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </>
-                    )
-                }
-            </div>
-        </div>
-    )
+  const [params, setParams] = useSearchParams();
+  const [value, setValue] = useState(params.get("q") ?? "");
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const timeout = window.setTimeout(
+      () => setDebouncedValue(value.trim()),
+      350,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [value]);
+  useEffect(() => {
+    const next = new URLSearchParams();
+    if (debouncedValue) next.set("q", debouncedValue);
+    setParams(next, { replace: true });
+  }, [debouncedValue, setParams]);
+  const { data, isLoading, isError } = useGetSearchMovies(debouncedValue);
+  return (
+    <>
+      <Header />
+      <main className="mx-auto min-h-screen max-w-7xl px-6 py-12">
+        <p className="text-xs font-bold uppercase tracking-[.25em] text-violet-300">
+          Explore o catálogo
+        </p>
+        <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">
+          Buscar filmes
+        </h1>
+        <label className="relative mt-8 block max-w-2xl">
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+            size={19}
+          />
+          <Input
+            autoFocus
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            placeholder="Título do filme…"
+            aria-label="Buscar filmes por título"
+            className="h-14 rounded-2xl border-white/10 bg-white/5 pl-12 text-white placeholder:text-zinc-500 focus-visible:ring-violet-400"
+          />
+        </label>
+        <section className="mt-10" aria-live="polite">
+          {isLoading && <p className="text-zinc-400">Buscando filmes…</p>}
+          {isError && (
+            <p role="alert" className="text-red-300">
+              A busca falhou. Confira sua conexão e tente novamente.
+            </p>
+          )}
+          {!isLoading &&
+            !isError &&
+            debouncedValue &&
+            !data?.results.length && (
+              <p className="text-zinc-400">
+                Nenhum filme encontrado para “{debouncedValue}”.
+              </p>
+            )}
+          {!debouncedValue && (
+            <p className="text-zinc-400">
+              Digite um título para começar a busca.
+            </p>
+          )}
+          {!!data?.results.length && (
+            <>
+              <h2 className="mb-5 text-lg font-semibold text-white">
+                Resultados{" "}
+                <span className="text-sm font-normal text-zinc-500">
+                  ({data.results.length})
+                </span>
+              </h2>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                {data.results.map((movie) => (
+                  <CardMovie key={movie.id} movie={movie} />
+                ))}
+              </div>
+            </>
+          )}
+        </section>
+      </main>
+    </>
+  );
 }

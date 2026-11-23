@@ -6,34 +6,50 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import CardMovie from "@/components/CardMovie/CardMovie";
 
 export default function MoviesByGenres() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const genreId = searchParams.get("genreId");
+  const genreName = searchParams.get("genreName");
 
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const genreId = searchParams.get("genreId");
-    const genreName = searchParams.get("genreName");
+  const {
+    data: moviePage,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetMoviesByGenres(genreId ?? "");
+  const moviesByGenres = moviePage?.results;
 
-    const { data: moviesByGenres, isLoading, isFetching } = useGetMoviesByGenres(genreId ?? "")
+  if (isLoading) {
+    return <SkeletonMoviesByGenres />;
+  }
 
-    if (isLoading || isFetching) {
-        return <SkeletonMoviesByGenres />
-    }
-
-    return (
-        <div className="p-5">
-            <div className="w-full flex gap-5 items-center">
-                <Button onClick={() => navigate("/")}>Voltar</Button>
-                <div className="w-full flex flex-col m-5">
-                    <h1 className="text-white text-xl font-light uppercase">{genreName}</h1>
-                    <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
-                </div>
-            </div>
-            <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
-                {
-                    moviesByGenres?.map((movie: Movies) => (
-                        <CardMovie movie={movie} key={movie.id}/>
-                    ))
-                }
-            </div>
+  return (
+    <div className="p-5">
+      <div className="w-full flex gap-5 items-center">
+        <Button onClick={() => navigate("/")}>Voltar</Button>
+        <div className="w-full flex flex-col m-5">
+          <h1 className="text-white text-xl font-light uppercase">
+            {genreName}
+          </h1>
+          <span className="w-full max-w-[500px] p-[0.5px] bg-white"></span>
         </div>
-    )
+      </div>
+      <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
+        {moviesByGenres?.map((movie: Movies) => (
+          <CardMovie movie={movie} key={movie.id} />
+        ))}
+      </div>
+      {isFetching && <p className="mt-4 text-sm text-zinc-500">Atualizando…</p>}
+      {isError && (
+        <p role="alert" className="mt-5 text-red-300">
+          Não foi possível carregar esta categoria.
+        </p>
+      )}
+      {!isError && !moviesByGenres?.length && (
+        <p className="mt-5 text-zinc-400">
+          Nenhum filme encontrado nesta categoria.
+        </p>
+      )}
+    </div>
+  );
 }

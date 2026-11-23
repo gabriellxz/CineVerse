@@ -1,26 +1,54 @@
 import { api } from "@/config/api";
 
-export async function getPopularMovies() {
-    const response = await api.get(`/movie/popular?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
-    return response.data.results
+const params = { language: "pt-BR" };
+
+export async function getPopularMovies(page = 1, signal?: AbortSignal) {
+  const { data } = await api.get("/movie/popular", {
+    params: { ...params, page },
+    signal,
+  });
+  return data;
 }
 
-export async function getTopRatedMovies() {
-    const response = await api.get(`/movie/top_rated?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
-    return response.data.results
+export async function getTopRatedMovies(signal?: AbortSignal) {
+  const { data } = await api.get("/movie/top_rated", { params, signal });
+  return data.results;
 }
 
-export async function getVideosMovies(movieId: string) {
-    const response = await api.get(`/movie/${movieId}/videos?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
-    return response.data.results
+export async function getNowPlayingMovies(signal?: AbortSignal) {
+  const { data } = await api.get("/movie/now_playing", { params, signal });
+  return data.results;
 }
 
-export async function getSearchMovies(search: string) {
-    const response = await api.get(`/search/movie?api_key=${import.meta.env.VITE_API_KEY}&query=${search}&language=pt-BR`)
-    return response.data.results
+export async function getUpcomingMovies(signal?: AbortSignal) {
+  const { data } = await api.get("/movie/upcoming", { params, signal });
+  return data.results;
 }
 
-export async function getMovieById(movieId: string) {
-    const response = await api.get(`/movie/${movieId}?api_key=${import.meta.env.VITE_API_KEY}&language=pt-BR`)
-    return response.data
-} 
+export async function getVideosMovies(movieId: string, signal?: AbortSignal) {
+  const { data } = await api.get(`/movie/${movieId}/videos`, {
+    params,
+    signal,
+  });
+  return data.results;
+}
+
+export async function getSearchMovies(
+  search: string,
+  page = 1,
+  signal?: AbortSignal,
+) {
+  const { data } = await api.get("/search/movie", {
+    params: { ...params, query: search, page },
+    signal,
+  });
+  return data;
+}
+
+export async function getMovieById(movieId: string, signal?: AbortSignal) {
+  const { data } = await api.get(`/movie/${movieId}`, {
+    params: { ...params, append_to_response: "credits" },
+    signal,
+  });
+  return data;
+}
