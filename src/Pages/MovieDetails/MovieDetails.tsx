@@ -131,8 +131,8 @@ export default function MovieDetails() {
             </div>
           </div>
         </section>
-        <section className="mx-auto grid max-w-7xl gap-10 px-6 py-8 lg:grid-cols-[1fr_300px]">
-          <div>
+        <section className="mx-auto grid max-w-7xl gap-10 overflow-hidden px-6 py-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="min-w-0">
             <h2 className="text-lg font-semibold text-white">Sinopse</h2>
             <p className="mt-3 max-w-3xl leading-7 text-zinc-400">
               {movie.overview || "Sinopse indisponível."}
@@ -140,9 +140,9 @@ export default function MovieDetails() {
             <h2 className="mt-10 text-lg font-semibold text-white">
               Elenco principal
             </h2>
-            <div className="mt-4 flex gap-4 overflow-x-auto pb-3">
+            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
               {movie.credits?.cast.slice(0, 12).map((person) => (
-                <article key={person.id} className="w-28 shrink-0">
+                <article key={person.id} className="min-w-0">
                   <div className="aspect-[3/4] overflow-hidden rounded-xl bg-white/5">
                     {person.profile_path ? (
                       <img
